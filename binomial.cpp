@@ -10,16 +10,22 @@ void instructions() {
 	cout << "1: probability fixed x\n 2: probability of range of 0 to x\n 3: probability of range of x to y\n 4: expected value\n 5: quit\n";
 }
 
-// Binomial Coefficient function code from https://www.geeksforgeeks.org/binomial-coefficient-dp-9/
-double nCr(int n, int r) {
-	if (r > n)
-		return 0;
-	if (r == 0 || r == n)
-		return 1;
+// Binomial Coefficient function code from https://www.geeksforgeeks.org/space-and-time-efficient-binomial-coefficient/
+double nCr(int n, int k) {
+	double res = 1;
 
-	// Recur
-	return nCr(n - 1, r - 1)
-		+ nCr(n - 1, r);
+	// Since C(n, k) = C(n, n-k) 
+	if (k > n - k)
+		k = n - k;
+
+	// Calculate value of 
+	// [n * (n-1) *---* (n-k+1)] / [k * (k-1) *----* 1] 
+	for (int i = 0; i < k; ++i) {
+		res *= (n - i);
+		res /= (i + 1);
+	}
+
+	return res;
 }
 
 unordered_map<int, double> populateBinomialTable(unordered_map<int, double> binomialTable, int n, float p) {
